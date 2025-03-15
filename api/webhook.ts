@@ -233,7 +233,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
   console.log("bot token", bot_token);
 
   // verify if init data is correct
-  if (verifyInitData(initData, body.token)) {
+  if (verifyInitData(initData, bot_token)) {
     console.log("Init data verified!");
     const urlParams = new URLSearchParams(initData);
     // user from urlParams is a string
@@ -302,7 +302,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
         console.log(`Merchant group is ${group_id}`);
 
         // notify our test group
-        await bot.sendMessage("-4235248990", group_text, {
+        await bot.sendMessage(process.env.GROUPT_CHAT_ID, group_text, {
           parse_mode: "HTML",
         });
 
@@ -310,22 +310,21 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
       }
 
       // send message to admin group
-      // await  bot.sendMessage("-4235248990", group_text, {parse_mode: 'HTML'})
+      // await  bot.sendMessage(process.env.GROUPT_CHAT_ID, group_text, {parse_mode: 'HTML'})
     } else {
       await bot.sendMessage(user_id, text, { parse_mode: "HTML" });
 
-      if (group_id != "") {
-        console.log(`Merchant group is ${group_id}`);
+  
 
         // notify our test group
-        await bot.sendMessage("-4235248990", group_text, {
+        await bot.sendMessage(process.env.GROUPT_CHAT_ID, group_text, {
           parse_mode: "HTML",
         });
 
         await bot.sendMessage(group_id, group_text, { parse_mode: "HTML" });
-      }
+      
       // send message to a group
-      // await  bot.sendMessage("-4235248990", group_text, {parse_mode: 'HTML'})
+      // await  bot.sendMessage(process.env.GROUPT_CHAT_ID, group_text, {parse_mode: 'HTML'})
     }
   } else {
     console.log("can't verify init data");
